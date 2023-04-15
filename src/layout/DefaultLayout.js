@@ -1,7 +1,11 @@
-import React from 'react'
-import { AppContent, AppSidebar, AppFooter, AppHeader } from '../components/index'
+import React, { useEffect } from 'react'
+import { AppContent, AppSidebar, AppFooter, AppHeader} from '../components/index'
+import { useNavigate } from 'react-router-dom'
+
 
 const DefaultLayout = () => {
+  
+  
   return (
     <div>
       <AppSidebar />
@@ -14,6 +18,10 @@ const DefaultLayout = () => {
       </div>
     </div>
   )
+
+
+
+
 }
 
 export default DefaultLayout

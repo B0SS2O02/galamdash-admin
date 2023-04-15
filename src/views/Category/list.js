@@ -147,7 +147,7 @@ const BestsList = () => {
                         <CCardBody>
                             <CForm style={{ "display": 'flex' }} onSubmit={(e) => { e.defaultPrevented() }}>
                                 <CFormInput id='search' name='search' type='text' placeholder='Search'></CFormInput>
-                                <CButton type='submit'>Search</CButton>
+                                <CButton type='submit' >Search</CButton>
                             </CForm>
                         </CCardBody>
                     </CCard>

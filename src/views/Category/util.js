@@ -42,6 +42,10 @@ const FormCreate = (props) => {
 
 }
 
+const Caplitailts= (word)=>{
+    return word[0].toUpperCase() + word.slice(1)
+}
 export {
-    FormCreate
+    FormCreate,
+    Caplitailts
 }

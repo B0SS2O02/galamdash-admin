@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import {
   CAvatar,
@@ -44,6 +44,7 @@ import {
   cilUserFemale,
 } from '@coreui/icons'
 
+
 import avatar1 from 'src/assets/images/avatars/1.jpg'
 import avatar2 from 'src/assets/images/avatars/2.jpg'
 import avatar3 from 'src/assets/images/avatars/3.jpg'
@@ -53,9 +54,12 @@ import avatar6 from 'src/assets/images/avatars/6.jpg'
 
 import WidgetsBrand from '../widgets/WidgetsBrand'
 import WidgetsDropdown from '../widgets/WidgetsDropdown'
+import Counts from '../widgets/Counts'
+
 
 const Dashboard = () => {
   const random = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
+  
 
   const progressExample = [
     { title: 'Visits', value: '29.703 Users', percent: 40, color: 'success' },
@@ -179,9 +183,10 @@ const Dashboard = () => {
   ]
 
   return (
+
     <>
-      <WidgetsDropdown />
-      <CCard className="mb-4">
+      <Counts />
+      {/* <CCard className="mb-4">
         <CCardBody>
           <CRow>
             <CCol sm={5}>
@@ -453,7 +458,7 @@ const Dashboard = () => {
             </CCardBody>
           </CCard>
         </CCol>
-      </CRow>
+      </CRow> */}
     </>
   )
 }

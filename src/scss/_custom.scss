@@ -3,4 +3,19 @@
     .mapping-list {
         overflow: scroll;
     }
-}   
+}
+
+.search-input {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    align-content: center;
+    padding:0 0.3rem;
+}
+
+.search-x {
+    position: absolute;
+    margin-right: 0.4rem;
+}

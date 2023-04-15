@@ -19,12 +19,19 @@ import {
     CModalBody,
     CModalFooter,
     CForm,
-    CFormInput
+    CFormInput,
+    CDropdown,
+    CDropdownMenu,
+    CDropdownItem,
+    CDropdownToggle,
 } from '@coreui/react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import setting from '../../setting.json'
 import { del, get } from 'src/fetch'
+import CIcon from '@coreui/icons-react'
+import { cilX } from '@coreui/icons'
+import { Caplitailts } from './util'
 
 const BestsList = () => {
     const [datalist, setDatalist] = useState([{ id: 0, title: "" }]);
@@ -35,6 +42,7 @@ const BestsList = () => {
     const [index, setIndex] = useState(0)
     const [change, setChange] = useState(1)
     const [search, setSearch] = useState('')
+    const [filter, Setfilter] = useState(['title', 'id'])
 
     let paginagtion = []
     for (let i = 1; i <= count; i++) {
@@ -85,7 +93,7 @@ const BestsList = () => {
     }
 
     const Next = () => {
-        if (page == count) {
+        if (page == count || count > 1) {
             return <CPaginationItem id='next' aria-label="Next" disabled>
                 <span aria-hidden="true">&raquo;</span>
             </CPaginationItem>
@@ -107,7 +115,60 @@ const BestsList = () => {
         }
     }
 
+    const SearchFunc = async (e) => {
+        e.preventDefault();
+        const res = await get(`/admin/user/search?word=${search}&filter=${filter[0]}`)
+        if (!!res) {
+            setDatalist(res.data.data)
+            setCount(res.data.pages)
+            setPage(res.data.page)
+        }
+    }
 
+    const Dropdown = (props) => {
+        if (props.list.length > 0) {
+            return (
+                <CDropdown>
+                    <CDropdownToggle color="secondary">{Caplitailts(props.list[0])}</CDropdownToggle>
+                    <CDropdownMenu>
+                        {
+                            props.list.map((l, index) => {
+                                {
+                                    if (index > 0) {
+                                        return <CDropdownItem key={index} onClick={(e) => Filter(l)}>{Caplitailts(l)}</CDropdownItem>
+                                    }
+                                }
+                            })
+                        }
+                    </CDropdownMenu>
+                </CDropdown>
+            )
+        }
+    }
+    const ClearButtonHidden = () => {
+        if (search == '') {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    const ClearSearch = (e) => {
+        setSearch('')
+        setPage(1)
+        setCount(1)
+        setChange(change + 1)
+    }
+
+    const Filter = (name) => {
+        let list = [name]
+        for (let i = 0; i < filter.length; i++) {
+            if (filter[i] != name) {
+                list.push(filter[i])
+            }
+        }
+        Setfilter(list)
+    }
 
     return (
         <div>
@@ -145,8 +206,14 @@ const BestsList = () => {
                     </CCardHeader>
                     <CCard>
                         <CCardBody>
-                            <CForm style={{ "display": 'flex' }} onSubmit={(e) => { e.defaultPrevented() }}>
-                                <CFormInput id='search' name='search' type='text' placeholder='Search'></CFormInput>
+                            <CForm style={{ "display": 'flex' }} className='search-form' onSubmit={SearchFunc}>
+                                <Dropdown list={filter} />
+                                <div className='search-input'>
+                                    <CFormInput id='search' name='search' type='text' placeholder='Search' value={search}
+                                        onChange={(e) => { setSearch(e.target.value) }}></CFormInput>
+                                    <CIcon onClick={ClearSearch} hidden={ClearButtonHidden()} className='search-x' icon={cilX} size='xl' ></CIcon>
+                                </div>
+
                                 <CButton type='submit' >Search</CButton>
                             </CForm>
                         </CCardBody>

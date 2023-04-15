@@ -1,7 +1,6 @@
 import React, { Component, Suspense } from 'react'
 import { HashRouter, Route, Routes } from 'react-router-dom'
 import './scss/style.scss'
-import './App.css'
 import axios from 'axios'
 import setting from './setting.json'
 

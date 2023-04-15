@@ -5,10 +5,15 @@ import { cilUser } from '@coreui/icons'
 import axios from 'axios'
 import setting from '../../setting.json'
 import { get } from 'src/fetch'
+import { useNavigate } from 'react-router-dom'
+
+
+
+
 
 const Counts = () => {
     const [Counsts, setCounts] = useState([])
-
+    const redirect = useNavigate()
     useEffect(() => {
         GetCounts()
     }, [])
@@ -19,6 +24,11 @@ const Counts = () => {
             setCounts(result.data)
         }
     }
+
+    const Title = (title) => {
+        return title[0].toUpperCase() + title.slice(1) + 's'
+    }
+
     return (
         <div>
             <CRow>
@@ -27,9 +37,12 @@ const Counts = () => {
                         <CWidgetStatsF
                             className="mb-3"
                             icon={<CIcon width={24} icon={cilUser} size="xl" />}
-                            title={count.title + ' counts'}
+                            title={Title(count.title) + ' counts'}
                             value={count.count}
                             color={count.color}
+                            onClick={() => {
+                                redirect(`/${count.title}`)
+                            }}
                         />
                     </CCol>
                     )

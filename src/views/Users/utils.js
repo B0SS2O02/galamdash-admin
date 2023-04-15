@@ -34,6 +34,10 @@ const BanFfunc = async (id) => {
     document.location.reload()
 }
 
+const Caplitailts= (word)=>{
+    return word[0].toUpperCase() + word.slice(1)
+}
+
 
 const Ban = (props) => {
     if (props.ban) {
@@ -59,5 +63,6 @@ const Ban = (props) => {
 
 export {
     Type,
-    Ban
+    Ban,
+    Caplitailts
 }

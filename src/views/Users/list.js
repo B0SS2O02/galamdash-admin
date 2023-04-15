@@ -24,32 +24,29 @@ import {
     CDropdownMenu,
     CDropdownItem
 } from '@coreui/react'
-import { Link } from 'react-router-dom'
-import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 import setting from '../../setting.json'
 import Error404 from '../pages/page404/Page404'
-import { Ban, Type } from './utils'
+import { Ban, Caplitailts, Type } from './utils'
 import { get } from '../../fetch'
 
 const BestsList = () => {
     const [datalist, setDatalist] = useState(null);
     const [count, setCount] = useState(1)
     const [page, setPage] = useState(1)
-    const [visible, setVisible] = useState(false)
-    const [ID, setID] = useState(0)
-    const [index, setIndex] = useState(0)
     const [change, setChange] = useState(1)
-
     let paginagtion = []
     for (let i = 1; i <= count; i++) {
         paginagtion.push(i)
     }
-
-    const DeleteButton = (id, index) => {
-        setID(id)
-        setIndex(index)
-        setVisible(true)
+    const redirect = useNavigate()
+    const TableTitle = 'Users'
+    const View = (url) => {
+        redirect(url)
     }
+
+    let split = { from: 'name', to: 'surname', name: 'User name', data: [] }
+
 
     const fetch = async (number) => {
         const res = await get(`/admin/user/all?page=${number}`)
@@ -97,10 +94,39 @@ const BestsList = () => {
         }
     }
 
+    const TableHeader = (props) => {
+        return (
+            props.data.map((d) => <CTableHeaderCell scope="col">{Caplitailts(d)}</CTableHeaderCell>
+            )
+        )
+    }
 
+    const TableBody = (props) => {
+        console.log(props.data)
+        return (
+            Object.keys(props.data).map((key, index) => {
+                console.log(key)
+                if (key == 'img') {
+                    return <CTableDataCell key={index} onClick={e => View(`/user/view?id=${props.data.id}`)} >
+                        <CAvatar src={`${setting.IP}/${props.data[key]}`} size="xl" />
+                    </CTableDataCell>
+                } else if (key == 'ban') {
+                    return <CTableDataCell key={index}>
+                        <Ban ban={props.data[key]} id={props.data.id} />
+                    </CTableDataCell>
+                } else if (key == 'type') {
+                    return <CTableDataCell key={index} >
+                        <Type type={props.data[key]} id={props.data.id} />
+                    </CTableDataCell>
+                } {
+                    return <CTableDataCell key={index} onClick={e => View(`/user/view?id=${props.data.id}`)} >
+                        {props.data[key]}
+                    </CTableDataCell>
+                }
+            })
+        )
 
-
-
+    }
 
     if (!datalist) {
         return (
@@ -109,90 +135,40 @@ const BestsList = () => {
     }
     return (
         <div>
-
-
-
             <CCol xs={12}>
                 <CCard className="mb-4">
                     <CCardHeader style={{
                         "display": "flex",
                         "justifyContent": "space-between"
                     }}>
-                        <strong>Student's academic datalist</strong>
-
+                        <strong>{TableTitle}</strong>
                     </CCardHeader>
                     <CCardBody className='mapping-list' >
                         <CTable hover striped style={{ "textAlign": 'center' }}>
                             <CTableHead color="dark">
                                 <CTableRow>
-                                    <CTableHeaderCell scope="col">ID</CTableHeaderCell>
-                                    <CTableHeaderCell scope="col">Nick</CTableHeaderCell>
-                                    <CTableHeaderCell scope="col">Name</CTableHeaderCell>
-                                    <CTableHeaderCell scope="col">Image</CTableHeaderCell>
-                                    <CTableHeaderCell scope="col">Ban</CTableHeaderCell>
-                                    <CTableHeaderCell scope="col">Type</CTableHeaderCell>
+                                    <TableHeader data={Object.keys(datalist[0])} />
                                 </CTableRow>
                             </CTableHead>
                             <CTableBody>
                                 {
                                     datalist.map((data, index) =>
-
                                         <CTableRow key={index} >
-
-                                            <CTableHeaderCell onClick={(e) => {
-                                                window.location.href = `./#/user/view?id=${data.id}`;
-                                            }} scope="row">
-                                                {data.id}
-                                            </CTableHeaderCell>
-
-
-                                            <CTableDataCell onClick={(e) => {
-                                                window.location.href = `./#/user/view?id=${data.id}`;
-                                            }} >
-                                                {data.nick}
-                                            </CTableDataCell>
-
-                                            <CTableDataCell onClick={(e) => {
-                                                window.location.href = `./#/user/view?id=${data.id}`;
-                                            }} >
-                                                {`${data.name} ${data.surname}`}
-                                            </CTableDataCell>
-
-
-                                            <CTableDataCell onClick={(e) => { window.location.href = `./#/user/view?id=${data.id}`; }} >
-                                                <CAvatar src={`${setting.IP}/${data.img}`} size="xl" />
-                                            </CTableDataCell>
-
-                                            <CTableDataCell >
-                                                <Ban ban={data.ban} id={data.id} />
-                                            </CTableDataCell>
-
-                                            <CTableDataCell  >
-                                                <Type type={data.type} id={data.id} />
-                                            </CTableDataCell>
-
-
-
+                                            <TableBody data={data} />
                                         </CTableRow>
-
                                     )
                                 }
-
                             </CTableBody>
-
                         </CTable>
-                       
-
-
                     </CCardBody>
                     <CPagination style={{
-                            "display": "flex",
-                            "justifyContent": "center"
-                        }}  >
-                            <Back />
-                            {paginagtion.map((pag, index) => <PaginagtionActive key={index} num={pag} />)}
-                            <Next />
-                        </CPagination>
+                        "display": "flex",
+                        "justifyContent": "center"
+                    }}  >
+                        <Back />
+                        {paginagtion.map((pag, index) => <PaginagtionActive key={index} num={pag} />)}
+                        <Next />
+                    </CPagination>
                 </CCard>
             </CCol >
         </div>

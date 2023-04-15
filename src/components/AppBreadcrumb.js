@@ -20,7 +20,7 @@ const AppBreadcrumb = () => {
       const routeName = getRouteName(currentPathname, routes)
       routeName &&
         breadcrumbs.push({
-          pathname: currentPathname,
+          pathname: '#'+currentPathname,
           name: routeName,
           active: index + 1 === array.length ? true : false,
         })
@@ -30,7 +30,6 @@ const AppBreadcrumb = () => {
   }
 
   const breadcrumbs = getBreadcrumbs(currentLocation)
-
   return (
     <CBreadcrumb className="m-0 ms-2">
       <CBreadcrumbItem href="/">Home</CBreadcrumbItem>

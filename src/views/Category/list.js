@@ -130,12 +130,12 @@ const BestsList = () => {
                 </CModal>
             </>
             <CCol xs={12}>
-                <CCard className="mb-4">
+                <CCard className="mb-4 mapping-list">
                     <CCardHeader style={{
                         "display": "flex",
                         "justifyContent": "space-between"
                     }}>
-                        <strong>Student's academic datalist</strong>
+                        <strong>Catgeory list</strong>
                         <CButton
                             color={'primary'}
                             onClick={(e) => { window.location.href = `./#/category/create`; }}

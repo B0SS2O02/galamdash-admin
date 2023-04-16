@@ -9,13 +9,16 @@ const get = async (url, config = {}) => {
     config['headers']['Authorization'] = token
     return await axios.get(setting.IP + url, config)
         .catch(err => {
-            if (err.response.status == 503 || err.response.status == 403) {
-                localStorage.clear()
-                document.location.reload()
+            if (!!err.response.status) {
+                if (err.response.status == 503 || err.response.status == 403) {
+                    localStorage.clear()
+                    document.location.reload()
+                }
             }
         })
 }
 const put = async (url, body = {}, config = {}) => {
+    console.log(url)
     if (!config.headers) {
         config['headers'] = {}
     }

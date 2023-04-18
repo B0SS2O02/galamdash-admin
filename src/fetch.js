@@ -9,6 +9,7 @@ const get = async (url, config = {}) => {
     config['headers']['Authorization'] = token
     return await axios.get(setting.IP + url, config)
         .catch(err => {
+            console.log(err)
             if (!!err.response.status) {
                 if (err.response.status == 503 || err.response.status == 403) {
                     localStorage.clear()
@@ -18,7 +19,6 @@ const get = async (url, config = {}) => {
         })
 }
 const put = async (url, body = {}, config = {}) => {
-    console.log(url)
     if (!config.headers) {
         config['headers'] = {}
     }

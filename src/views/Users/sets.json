@@ -1,0 +1,24 @@
+{
+    "rout": {
+        "list": "/user",
+        "view": "/user/view"
+    },
+    "path": {
+        "view": "/admin/user/view/",
+        "edit": "/admin/user/",
+        "list": "/admin/user/all",
+        "search": "/admin/user/search",
+        "ban": "/admin/user/ban",
+        "type":"/admin/user/type"
+    },
+    "title": "Users",
+    "edit": false,
+    "delete": false,
+    "createForm": [
+        {
+            "type": "input",
+            "title": "Category name",
+            "name": "title"
+        }
+    ]
+}

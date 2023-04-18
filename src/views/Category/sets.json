@@ -1,0 +1,26 @@
+{
+    "rout": {
+        "list": "/category",
+        "view": "/category/view",
+        "create": "/category/create",
+        "edit": "/category/edit"
+    },
+    "path": {
+        "view": "/admin/category/view/",
+        "edit": "/admin/category/",
+        "create": "/admin/category/",
+        "list": "/admin/category",
+        "search": "/admin/category/search",
+        "delete": "/admin/category/"
+    },
+    "title": "Categories",
+    "edit": true,
+    "delete": true,
+    "createForm": [
+        {
+            "type": "input",
+            "title": "Category name",
+            "name": "title"
+        }
+    ]
+}

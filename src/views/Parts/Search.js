@@ -15,9 +15,9 @@ const Search = (props) => {
     const setPage = props.setPage
     const setVisible2 = props.setVisible2
     const setAlert = props.setAlert
-    const setChange= props.setChange
-    const change=props.change
-    const path=props.path
+    const setChange = props.setChange
+    const change = props.change
+    const path = props.path
 
 
     const ClearButtonHidden = () => {
@@ -65,7 +65,7 @@ const Search = (props) => {
     }
     const SearchFunc = async (e) => {
         e.preventDefault();
-        const res = await get(`${path}search?word=${search}&filter=${filter[0]}`)
+        const res = await get(`${path.search}?word=${search}&filter=${filter[0]}`)
         if (!!res) {
             setDatalist(res.data.data)
             setCount(res.data.pages)
@@ -76,7 +76,7 @@ const Search = (props) => {
             }
         } else {
             if (res.data.data.length == 0) {
-                setVisible2(true) 
+                setVisible2(true)
                 setAlert(`${Caplitailts(filter[0])} "${search}" not define`)
             }
         }

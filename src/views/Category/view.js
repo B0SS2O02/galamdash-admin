@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import {
     CCard,
     CCardBody,
-    CCardSubtitle,
     CCardText,
     CCardTitle,
     CCardHeader,
@@ -10,39 +9,77 @@ import {
     CTable,
     CTableBody,
     CTableRow,
-    CTableDataCell
+    CTableDataCell,
+    CButton
 
 } from '@coreui/react'
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { get } from 'src/fetch';
+import { Time } from './util';
+import Delete from '../Parts/DeleteView';
+import sets from './sets.json'
+import setting from '../../setting.json'
 
-
-const YearView = () => {
+const CategoryView = () => {
     const [data, setData] = useState({})
+    const [visible, setVisible] = useState(false)
     let { search } = useLocation();
-
     const query = new URLSearchParams(search);
     const id = query.get('id');
+    const redirect = useNavigate()
 
     useEffect(() => {
         fetch()
     }, [])
 
+    const edit = sets.edit
+    const del = sets.delete
+
     const fetch = async () => {
-        let res = await get(`/admin/category/${id}`)
+        let res = await get(`${sets.path.view}${id}`)
         setData(res.data)
     }
-    const Time = (props) => {
-        let t = new Date(props.time)
-        const zero = (number) => {
-            if (number.toString().length < 2) {
-                return '0' + number.toString()
-            } else {
-                return number.toString()
+
+
+
+
+    const Options = (props) => {
+        if (props.edit || props.del) {
+            const Delete = (props) => {
+                if (props.del)
+                    return <CButton
+                        color={'danger'}
+                        onClick={(e) => { setVisible(true) }}
+                    >
+                        Delete
+                    </CButton>
             }
+
+            const Edit = (props) => {
+                if (props.edit) {
+                    return <CButton
+                        color={'warning'}
+                        onClick={(e) => {
+                            redirect(`${sets.rout.edit}?id=${props.id}`)
+                        }}
+                    >
+                        Edit
+                    </CButton>
+                }
+
+            }
+
+            return <div style={{
+                "display": "flex",
+                "justifyContent": "space-evenly"
+            }}>
+                <Edit edit={props.edit} id={props.id} />
+                <Delete del={props.del} id={props.id} />
+            </div>
         }
-        return (`${zero(t.getHours())}:${zero(t.getMinutes())}:${zero(t.getSeconds())} ${zero(t.getDay())}.${zero(t.getMonth())}.${t.getFullYear()}`)
+
     }
+
     const Content = (props) => {
         let { content } = props
         if (content == 'img') {
@@ -56,6 +93,27 @@ const YearView = () => {
             </CTableRow>
             )
         } else if (content == 'ban') {
+            const Ban = (props) => {
+                const ban = props.ban
+                const id = props.id
+                const path = props.path
+                const Color = (value) => {
+                    if (value) {
+                        return 'danger'
+                    } else {
+                        return 'info'
+                    }
+                }
+                const Ban = async (id) => {
+                    await put(`${path.ban}/${id}`)
+                    setChange(change + 1)
+                }
+                return <CButton color={Color(ban)}
+                            onClick={() => { Ban(id) }}
+                        >{Caplitailts('ban')}</CButton>
+                   
+            }
+
             return (<CTableRow color="light">
                 <CTableDataCell>
                     <CCardTitle>Ban</CCardTitle>
@@ -101,21 +159,34 @@ const YearView = () => {
 
     }
     return (
-        <CCard className="mb-4" >
-            <CCardHeader component="h5">Years view</CCardHeader>
-            <CCardBody >
-                <CTable>
-                    <CTableBody>
-                        {
-                            Object.keys(data).map((d, index) =>
-                                <Content key={index} content={d} />
-                            )
-                        }
-                    </CTableBody>
-                </CTable>
-            </CCardBody>
-        </CCard >
+        <div>
+            <Delete
+                visible={visible}
+                setVisible={setVisible}
+                path={sets.path.delete}
+                url={sets.rout.list}
+                ID={id}
+                title={data.title}
+            />
+            <CCard className="mb-4" >
+                <CCardHeader className='card-header' component="h5">Category view
+                    <Options edit={edit} del={del} id={id} />
+                </CCardHeader>
+                <CCardBody >
+                    <CTable>
+                        <CTableBody>
+                            {
+                                Object.keys(data).map((d, index) =>
+                                    <Content key={index} content={d} />
+                                )
+                            }
+                        </CTableBody>
+                    </CTable>
+                </CCardBody>
+            </CCard >
+        </div>
+
     )
 }
 
-export default YearView;
+export default CategoryView;

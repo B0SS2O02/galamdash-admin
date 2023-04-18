@@ -1,7 +1,11 @@
 import CIcon from "@coreui/icons-react";
-import { CButton, CTable, CTableBody, CTableDataCell, CTableHead, CTableHeaderCell, CTableRow } from "@coreui/react";
+import { CAvatar, CButton, CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle, CTable, CTableBody, CTableDataCell, CTableHead, CTableHeaderCell, CTableRow } from "@coreui/react";
 import { Caplitailts } from "./Util"
 import { cilChevronCircleDownAlt, cilChevronCircleUpAlt } from "@coreui/icons";
+import { useNavigate } from "react-router-dom";
+import setting from '../../setting.json'
+import { put } from "src/fetch";
+import Dropdown from "../Users/Dropdown";
 
 const Table = (props) => {
     let datalist = props.datalist
@@ -16,6 +20,8 @@ const Table = (props) => {
     let url = props.url
     let edit = props.edit
     let del = props.del
+    let path = props.path
+    const redirect = useNavigate()
 
     const SortChange = (name, setChange, change) => {
         if (name == sort[0]) {
@@ -77,15 +83,16 @@ const Table = (props) => {
     const Options = (props) => {
         if (props.edit || props.del) {
             const Delete = (props) => {
-                if (props.del)
-                    console.log(props)
-                return <CButton
-                    color={'danger'}
-                    onClick={(e) => { DeleteButton(props.data.id, props.index, props.setID, props.setIndex, props.setVisible) }}
+                if (props.del) {
+                    return <CButton
+                        color={'danger'}
+                        onClick={(e) => { DeleteButton(props.data.id, props.index, props.setID, props.setIndex, props.setVisible) }}
+                    >
+                        Delete
+                    </CButton>
+                }
 
-                >
-                    Delete
-                </CButton>
+
             }
 
             const Edit = (props) => {
@@ -93,7 +100,7 @@ const Table = (props) => {
                     return <CButton
                         color={'warning'}
                         onClick={(e) => {
-                            window.location.href = `./#/${url}/edit?id=${props.data.id}`;
+                            redirect(`${url.edit}?id=${props.data.id}`)
                         }}
                     >
                         Edit
@@ -106,35 +113,111 @@ const Table = (props) => {
                 "display": "flex",
                 "justifyContent": "space-evenly"
             }}>
-                <Edit edit={props.edit} data={props.data}  />
+                <Edit edit={props.edit} data={props.data} />
                 <Delete del={props.del} data={props.data} index={props.index} setID={props.setID} setIndex={props.setIndex} setVisible={props.setVisible} />
             </CTableDataCell>
         }
 
     }
 
+    const Content = (props) => {
+        const data = props.data
+        const d = props.d
+        const id = props.id
+        const url = props.url
+        const path = props.path
+        let setChange = props.setChange
+        let change = props.change
+
+        if (d == 'img') {
+            return <CTableDataCell onClick={(e) => {
+                redirect(`${url.view}?id=${id}`)
+            }}>
+                <CAvatar src={`${setting.IP}/${data[d]}`} />
+
+            </CTableDataCell>
+        } else if (d == 'ban') {
+            const Color = (value) => {
+                if (value) {
+                    return 'danger'
+                } else {
+                    return 'info'
+                }
+            }
+            const Ban = async (id) => {
+                await put(`${path.ban}/${id}`)
+                setChange(change + 1)
+            }
+            return <CTableDataCell>
+                <CButton color={Color(data[d])}
+                    onClick={() => { Ban(id) }}
+                >{Caplitailts(d)}</CButton>
+            </CTableDataCell>
+        } else if (d == 'Utype') {
+            let l = ['ulanyjy', 'yazyjy', 'redaktor']
+            let list = [l[data[d]]]
+            for (let i in l) {
+                if (data[d] != i) {
+                    list.push(l[i])
+                }
+            }
+            const edit = async (value) => {
+                const l = ['ulanyjy', 'yazyjy', 'redaktor']
+                await put(`${path.type}/${id}`, { type: l.indexOf(value) })
+                setChange(change + 1)
+            }   
+            return <CTableDataCell>
+                <Dropdown list={list} func={edit} />
+            </CTableDataCell>
+        } else {
+            return <CTableDataCell onClick={(e) => {
+                redirect(`${url.view}?id=${id}`)
+            }}>
+                {data[d]}
+            </CTableDataCell>
+        }
+
+    }
+
+    const TableBody = (props) => {
+        let datalist = props.datalist
+        let url = props.url
+        let path = props.path
+        let setChange = props.setChange
+        let change = props.change
+
+
+
+        return < CTableBody >
+            {datalist.map((data, index) => {
+                {
+                    if (data.Utype != 3) {
+                        return <CTableRow key={index} >
+                            {
+                                Object.keys(data).map((d, index2) => {
+                                    return <Content url={url} key={index2} data={data} d={d} id={data.id} path={path} change={change} setChange={setChange} />
+                                })
+                            }
+                            <Options edit={edit} del={del} data={data} index={index} setID={setID} setIndex={setIndex} setVisible={setVisible} />
+                        </CTableRow>
+                    }
+
+
+
+                }
+
+            }
+            )}
+        </CTableBody >
+    }
+
     return <CTable hover striped style={{ "textAlign": 'center' }}>
         <CTableHead color="dark">
             <TableHeader data={datalist} sort={sort} setChange={setChange} change={change} edit={edit} del={del} />
         </CTableHead>
-        <CTableBody >
-            {
-                datalist.map((data, index) =>
-                    <CTableRow key={index} >
-                        <CTableHeaderCell onClick={(e) => {
-                            window.location.href = `./#/${url}/view?id=${data.id}`;
-                        }} scope="row">{data.id}</CTableHeaderCell>
-                        <CTableDataCell onClick={(e) => {
-                            window.location.href = `./#/${url}/view?id=${data.id}`;
-                        }}>{data.title}</CTableDataCell>
+        <TableBody datalist={datalist} url={url} path={path} change={change} setChange={setChange} />
 
-                        <Options edit={edit} del={del} data={data} index={index} setID={setID} setIndex={setIndex} setVisible={setVisible} />
-                    </CTableRow>
 
-                )
-            }
-
-        </CTableBody>
 
     </CTable>
 }

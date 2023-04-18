@@ -9,36 +9,83 @@ import {
     CTable,
     CTableBody,
     CTableRow,
-    CTableDataCell
+    CTableDataCell,
+    CButton
 
 } from '@coreui/react'
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { get, put } from 'src/fetch';
+import { Time } from './util';
+import Delete from '../Parts/DeleteView';
+import sets from './sets.json'
 import setting from '../../setting.json'
-import { Ban, Type } from './utils';
-import { get } from 'src/fetch';
+import Dropdown from './Dropdown';
 
-
-const YearView = () => {
+const CategoryView = () => {
     const [data, setData] = useState({})
+    const [visible, setVisible] = useState(false)
     let { search } = useLocation();
-
     const query = new URLSearchParams(search);
     const id = query.get('id');
+    const redirect = useNavigate()
+    const [change, setChange] = useState(0)
 
     useEffect(() => {
         fetch()
-    }, [])
+    }, [change])
+
+    const edit = sets.edit
+    const del = sets.delete
 
     const fetch = async () => {
-        const result = await get(`/admin/user/view/${id}`)
-        if (!!result) {
-            setData(result.data)
+        let res = await get(`${sets.path.view}${id}`)
+        setData(res.data)
+    }
+
+
+
+
+    const Options = (props) => {
+        if (props.edit || props.del) {
+            const Delete = (props) => {
+                if (props.del)
+                    return <CButton
+                        color={'danger'}
+                        onClick={(e) => { setVisible(true) }}
+                    >
+                        Delete
+                    </CButton>
+            }
+
+            const Edit = (props) => {
+                if (props.edit) {
+                    return <CButton
+                        color={'warning'}
+                        onClick={(e) => {
+                            redirect(`${sets.rout.edit}?id=${props.id}`)
+                        }}
+                    >
+                        Edit
+                    </CButton>
+                }
+
+            }
+
+            return <div style={{
+                "display": "flex",
+                "justifyContent": "space-evenly"
+            }}>
+                <Edit edit={props.edit} id={props.id} />
+                <Delete del={props.del} id={props.id} />
+            </div>
         }
 
     }
 
     const Content = (props) => {
-        let { content } = props
+        let content = props.content
+        let path = props.path
+        let id = props.id
         if (content == 'img') {
             return (<CTableRow color="light">
                 <CTableDataCell>
@@ -50,22 +97,56 @@ const YearView = () => {
             </CTableRow>
             )
         } else if (content == 'ban') {
+            const Ban = (props) => {
+                const ban = props.ban
+                const id = props.id
+                const path = props.path
+                const Color = (value) => {
+                    if (value) {
+                        return 'danger'
+                    } else {
+                        return 'info'
+                    }
+                }
+                const Ban = async (id) => {
+                    await put(`${path.ban}/${id}`)
+                    setChange(change + 1)
+                }
+                return <CButton color={Color(ban)}
+                    onClick={() => { Ban(id) }}
+                >Ban</CButton>
+
+            }
             return (<CTableRow color="light">
                 <CTableDataCell>
                     <CCardTitle>Ban</CCardTitle>
                 </CTableDataCell>
                 <CTableDataCell>
-                    <Ban ban={data[content]} id={data.id} />
+                    <Ban ban={data[content]} path={sets.path} id={data.id} />
                 </CTableDataCell>
             </CTableRow>
             )
-        } else if (content == 'type') {
+        } else if (content == 'Utype') {
+            let l = ['ulanyjy', 'yazyjy', 'redaktor']
+            let list = [l[data[content]]]
+            for (let i in l) {
+                if (data[content] != i) {
+                    list.push(l[i])
+                }
+            }
+
+            const edit = async (value) => {
+                console.log(value)
+                const l = ['ulanyjy', 'yazyjy', 'redaktor']
+                await put(`${path.type}/${id}`, { type: l.indexOf(value) })
+                setChange(change + 1)
+            }
             return (<CTableRow color="light">
                 <CTableDataCell>
                     <CCardTitle>Type</CCardTitle>
                 </CTableDataCell>
                 <CTableDataCell>
-                    <Type type={data[content]} id={data.id} />
+                    <Dropdown list={list} func={edit} />
                 </CTableDataCell>
             </CTableRow>
             )
@@ -94,39 +175,35 @@ const YearView = () => {
         }
 
     }
-    const Time = (props) => {
-        let t = new Date(props.time)
-        const zero = (number) => {
-            if (number.toString().length < 2) {
-                return '0' + number.toString()
-            } else {
-                return number.toString()
-            }
-        }
-        return (`${zero(t.getHours())}:${zero(t.getMinutes())}:${zero(t.getSeconds())} ${zero(t.getDay())}.${zero(t.getMonth())}.${t.getFullYear()}`)
-    }
-
-
-
     return (
-        <CCard className="mb-4" >
-            <CCardHeader component="h5">Years view</CCardHeader>
-            <CCardBody>
-                <CTable>
-                    <CTableBody>
-                        {
-                            Object.keys(data).map((content, index) =>
-                                <Content key={index} content={content} />
-                            )
-                        }
-                    </CTableBody>
-                </CTable >
+        <div>
+            <Delete
+                visible={visible}
+                setVisible={setVisible}
+                path={sets.path.delete}
+                url={sets.rout.list}
+                ID={id}
+                title={data.title}
+            />
+            <CCard className="mb-4" >
+                <CCardHeader className='card-header' component="h5">Category view
+                    <Options edit={edit} del={del} id={id} />
+                </CCardHeader>
+                <CCardBody >
+                    <CTable>
+                        <CTableBody>
+                            {
+                                Object.keys(data).map((d, index) =>
+                                    <Content key={index} content={d} id={data.id} path={sets.path} />
+                                )
+                            }
+                        </CTableBody>
+                    </CTable>
+                </CCardBody>
+            </CCard >
+        </div>
 
-
-            </CCardBody>
-
-        </CCard>
     )
 }
 
-export default YearView;
+export default CategoryView;

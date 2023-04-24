@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { CRow, CCol, CWidgetStatsF } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilUser } from '@coreui/icons'
+import { cilImage, cilUser } from '@coreui/icons'
 import axios from 'axios'
 import setting from '../../setting.json'
 import { get } from 'src/fetch'
@@ -29,6 +29,15 @@ const Counts = () => {
         return title[0].toUpperCase() + title.slice(1) + 's'
     }
 
+    const Icon = (title) => {
+        if ('user'==title) {
+            return cilUser
+        }
+        if(title=='post'){
+            return cilImage 
+        }
+    }
+
     return (
         <div>
             <CRow>
@@ -36,7 +45,7 @@ const Counts = () => {
                     Counsts.map((count, index) => <CCol key={index} xs={12} sm={6} lg={3}>
                         <CWidgetStatsF
                             className="mb-3"
-                            icon={<CIcon width={24} icon={cilUser} size="xl" />}
+                            icon={<CIcon width={24} icon={Icon(count.title)} size="xl" />}
                             title={Title(count.title) + ' counts'}
                             value={count.count}
                             color={count.color}

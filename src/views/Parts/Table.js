@@ -5,7 +5,7 @@ import { cilChevronCircleDownAlt, cilChevronCircleUpAlt } from "@coreui/icons";
 import { useNavigate } from "react-router-dom";
 import setting from '../../setting.json'
 import { put } from "src/fetch";
-import Dropdown from "../Users/Dropdown";
+import Dropdown from "./Dropdown";
 
 const Table = (props) => {
     let datalist = props.datalist
@@ -24,6 +24,9 @@ const Table = (props) => {
     const redirect = useNavigate()
 
     const SortChange = (name, setChange, change) => {
+        if(name=="Category"){
+            name=name+'Id'
+        }
         if (name == sort[0]) {
             if (sort[1] == 'ASC') {
                 setSort([name, 'DESC'])
@@ -129,7 +132,13 @@ const Table = (props) => {
         let setChange = props.setChange
         let change = props.change
 
-        if (d == 'img') {
+        if (typeof (data[d]) == 'object') {
+            return <CTableDataCell onClick={(e) => {
+                redirect(`${url.view}?id=${id}`)
+            }}>
+                {data[d].title}
+            </CTableDataCell>
+        } else if (d == 'img') {
             return <CTableDataCell onClick={(e) => {
                 redirect(`${url.view}?id=${id}`)
             }}>
@@ -165,7 +174,7 @@ const Table = (props) => {
                 const l = ['ulanyjy', 'yazyjy', 'redaktor']
                 await put(`${path.type}/${id}`, { type: l.indexOf(value) })
                 setChange(change + 1)
-            }   
+            }
             return <CTableDataCell>
                 <Dropdown list={list} func={edit} />
             </CTableDataCell>

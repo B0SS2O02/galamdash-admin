@@ -14,9 +14,9 @@ const Pagination = (props) => {
 
     const PaginagtionActive = (props) => {
         if (props.num == page) {
-            return <CPaginationItem onClick={(e) => { console.log(e.target.innerText) }} active >{props.num}</CPaginationItem>
+            return <CPaginationItem  active >{props.num}</CPaginationItem>
         } else {
-            return <CPaginationItem onClick={(e) => { console.log('Number'); fetch(e.target.innerText) }} >{props.num}</CPaginationItem>
+            return <CPaginationItem onClick={(e) => {  fetch(e.target.innerText) }} >{props.num}</CPaginationItem>
         }
     }
     const Next = () => {
@@ -25,7 +25,7 @@ const Pagination = (props) => {
                 <span aria-hidden="true">&raquo;</span>
             </CPaginationItem>
         } else {
-            return <CPaginationItem id='next' aria-label="Next" onClick={(e) => { console.log('Next'); fetch(page + 1) }}>
+            return <CPaginationItem id='next' aria-label="Next" onClick={(e) => {fetch(page + 1) }}>
                 <span aria-hidden="true">&raquo;</span>
             </CPaginationItem>
         }
@@ -36,7 +36,7 @@ const Pagination = (props) => {
                 <span aria-hidden="true">&laquo;</span>
             </CPaginationItem>
         } else {
-            return <CPaginationItem id='next' aria-label="Next" onClick={(e) => { console.log('Back'); fetch(page - 1) }}>
+            return <CPaginationItem id='next' aria-label="Next" onClick={(e) => {fetch(page - 1) }}>
                 <span aria-hidden="true">&laquo;</span>
             </CPaginationItem>
         }

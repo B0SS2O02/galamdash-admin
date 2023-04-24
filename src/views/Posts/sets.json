@@ -1,0 +1,28 @@
+{
+    "rout": {
+        "list": "/post",
+        "view": "/post/view",
+        "create": "/post/create",
+        "edit": "/post/edit",
+        "user": "/user/view"
+    },
+    "path": {
+        "view": "/admin/post/view/",
+        "edit": "/admin/post/",
+        "create": "/admin/post/",
+        "list": "/admin/post",
+        "search": "/admin/post/search",
+        "delete": "/admin/post/",
+        "ban": "/admin/post/ban"
+    },
+    "title": "Posts",
+    "edit": true,
+    "delete": true,
+    "createForm": [
+        {
+            "type": "input",
+            "title": "Category name",
+            "name": "title"
+        }
+    ]
+}

@@ -47,16 +47,6 @@ const NoAuth = () => {
   )
 }
 
-// const Admin = async () => {
-//   await axios.get(`${setting.IP}/admin/user/type/`, {
-//     headers: { Authorization: `Bearer ${localStorage.token}` }
-//   }).then((response) => {
-//     console.log(response.data.type)
-//   }).catch((err) => {
-//     console.log(err)
-//   })
-
-// }
 
 class App extends Component {
   render() {

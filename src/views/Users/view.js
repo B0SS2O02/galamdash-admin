@@ -15,11 +15,11 @@ import {
 } from '@coreui/react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import { get, put } from 'src/fetch';
-import { Time } from './util';
+import { Caplitailts, Time } from './util';
 import Delete from '../Parts/DeleteView';
 import sets from './sets.json'
 import setting from '../../setting.json'
-import Dropdown from './Dropdown';
+import Dropdown from '../Parts/Dropdown';
 
 const CategoryView = () => {
     const [data, setData] = useState({})
@@ -136,7 +136,6 @@ const CategoryView = () => {
             }
 
             const edit = async (value) => {
-                console.log(value)
                 const l = ['ulanyjy', 'yazyjy', 'redaktor']
                 await put(`${path.type}/${id}`, { type: l.indexOf(value) })
                 setChange(change + 1)
@@ -186,7 +185,7 @@ const CategoryView = () => {
                 title={data.title}
             />
             <CCard className="mb-4" >
-                <CCardHeader className='card-header' component="h5">Category view
+                <CCardHeader className='card-header' component="h5">{Caplitailts(sets.title)} view
                     <Options edit={edit} del={del} id={id} />
                 </CCardHeader>
                 <CCardBody >

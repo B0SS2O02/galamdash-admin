@@ -70,6 +70,7 @@ const CategoryList = () => {
 
 
 
+
     if (!datalist) {
         return (
             <Error404 />

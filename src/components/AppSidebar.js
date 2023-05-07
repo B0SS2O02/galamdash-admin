@@ -14,12 +14,13 @@ import 'simplebar/dist/simplebar.min.css'
 
 // sidebar nav config
 import navigation from '../_nav'
+import { useNavigate } from 'react-router-dom'
 
 const AppSidebar = () => {
   const dispatch = useDispatch()
   const unfoldable = useSelector((state) => state.sidebarUnfoldable)
   const sidebarShow = useSelector((state) => state.sidebarShow)
-
+  const redirect = useNavigate()
   return (
     <CSidebar
       position="fixed"
@@ -30,8 +31,8 @@ const AppSidebar = () => {
       }}
     >
       <CSidebarBrand className="d-none d-md-flex" to="/">
-        <CCardImage className="sidebar-brand-full" height={64} src={logo2} />
-        <CCardImage className="sidebar-brand-narrow" orientation="top" height={64} src={logo} />
+        <CCardImage className="sidebar-brand-full" height={64} src={logo2} onClick={() => { redirect('/') }} />
+        <CCardImage className="sidebar-brand-narrow" orientation="top" height={64} src={logo} onClick={() => { redirect('/') }}    />
       </CSidebarBrand>
       <CSidebarNav>
         <SimpleBar>

@@ -15,6 +15,8 @@ const PostsView = React.lazy(() => import('./views/Posts/view'))
 const PostsEdit = React.lazy(() => import('./views/Posts/edit'))
 const PostsCreate = React.lazy(() => import('./views/Posts/create'))
 
+const UnconfirmedList = React.lazy(() => import('./views/Unconfirmed/list'))
+const UnconfirmedView = React.lazy(() => import('./views/Unconfirmed/view'))
 
 const routes = [
   // { path: '*', exact: true, name: 'Dashboard', element: Dashboard },
@@ -32,7 +34,10 @@ const routes = [
   { path: '/post', exact: true, name: 'Post', element: PostsList },
   { path: '/post/view', name: 'Post view', element: PostsView },
   { path: '/post/edit', name: 'Post edit', element: PostsEdit },
-  { path: '/post/create', name: 'Post create', element: PostsCreate }, 
+  { path: '/post/create', name: 'Post create', element: PostsCreate },
+
+  { path: '/unconfirmed', exact: true, name: 'Unconfirmed', element: UnconfirmedList },
+  { path: '/unconfirmed/view', name: 'Unconfirmed view', element: UnconfirmedView },
 
 ]
 

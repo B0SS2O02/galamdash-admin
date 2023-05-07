@@ -30,6 +30,12 @@ const _nav = [
     to: '/post',
     icon: <CIcon icon={cilImage} customClassName="nav-icon" />,
   },
+  {
+    component: CNavItem,
+    name: 'Unconfirmed',
+    to: '/unconfirmed',
+    icon: <CIcon icon={cilImage} customClassName="nav-icon" />,
+  },
 ]
 
 export default _nav

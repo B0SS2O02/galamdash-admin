@@ -97,12 +97,12 @@ const CategoryList = () => {
                         "justifyContent": "space-between"
                     }}>
                         <strong>{Caplitailts(sets.title)} list</strong>
-                        <CButton
+                        {/* <CButton
                             color={'primary'}
                             onClick={(e) => { redirect(`${sets.rout.create}`) }}
                         >
                             Create
-                        </CButton>
+                        </CButton> */}
                     </CCardHeader>
                     <CCard>
                         <Search

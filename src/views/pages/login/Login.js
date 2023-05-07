@@ -32,7 +32,7 @@ const Login = () => {
     for (let i in e.target.elements) {
       body[e.target.elements[i].name] = e.target.elements[i].value
     }
-    let result = await axios.post(`${setting.IP}/user/login`, body)
+    let result = await axios.post(`${setting.IP}/api/user/login`, body)
       .catch((err) => {
         setAlert({
           title: err.response.data.msg,

@@ -1,6 +1,6 @@
 import axios from "axios"
 import setting from './setting.json'
-let token = `Bearer ${localStorage.token}`
+let token = localStorage.token
 
 const get = async (url, config = {}) => {
     if (!config.headers) {

@@ -1,0 +1,26 @@
+{
+    "rout": {
+        "list": "/unconfirmed",
+        "view": "/unconfirmed/view",
+        "user": "/user/view"
+    },
+    "path": {
+        "view": "/admin/unconfirmed/view/",
+        "edit": "/admin/unconfirmed/",
+        "create": "/admin/unconfirmed/",
+        "list": "/admin/unconfirmed/all",
+        "search": "/admin/unconfirmed/search",
+        "delete": "/admin/unconfirmed/",
+        "ban": "/admin/unconfirmed/ban"
+    },
+    "title": "Posts",
+    "edit": false,
+    "delete": false,
+    "createForm": [
+        {
+            "type": "input",
+            "title": "Category name",
+            "name": "title"
+        }
+    ]
+}

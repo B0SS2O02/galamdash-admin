@@ -1,5 +1,5 @@
 import CIcon from "@coreui/icons-react";
-import { CAvatar, CButton, CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle, CTable, CTableBody, CTableDataCell, CTableHead, CTableHeaderCell, CTableRow } from "@coreui/react";
+import { CAvatar, CButton, CCardText, CCardTitle, CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle, CTable, CTableBody, CTableDataCell, CTableHead, CTableHeaderCell, CTableRow } from "@coreui/react";
 import { Caplitailts } from "./Util"
 import { cilChevronCircleDownAlt, cilChevronCircleUpAlt } from "@coreui/icons";
 import { useNavigate } from "react-router-dom";
@@ -24,8 +24,8 @@ const Table = (props) => {
     const redirect = useNavigate()
 
     const SortChange = (name, setChange, change) => {
-        if(name=="Category"){
-            name=name+'Id'
+        if (name == "Category") {
+            name = name + 'Id'
         }
         if (name == sort[0]) {
             if (sort[1] == 'ASC') {
@@ -113,7 +113,7 @@ const Table = (props) => {
             }
 
             return <CTableDataCell style={{
-                "display": "flex",
+                // "display": "flex",
                 "justifyContent": "space-evenly"
             }}>
                 <Edit edit={props.edit} data={props.data} />
@@ -124,68 +124,100 @@ const Table = (props) => {
     }
 
     const Content = (props) => {
-        const data = props.data
-        const d = props.d
-        const id = props.id
-        const url = props.url
-        const path = props.path
-        let setChange = props.setChange
-        let change = props.change
+        try {
 
-        if (typeof (data[d]) == 'object') {
-            return <CTableDataCell onClick={(e) => {
-                redirect(`${url.view}?id=${id}`)
-            }}>
-                {data[d].title}
-            </CTableDataCell>
-        } else if (d == 'img') {
-            return <CTableDataCell onClick={(e) => {
-                redirect(`${url.view}?id=${id}`)
-            }}>
-                <CAvatar src={`${setting.IP}/${data[d]}`} />
+            const data = props.data
+            const d = props.d
+            const id = props.id
+            const url = props.url
+            const path = props.path
+            let setChange = props.setChange
+            let change = props.change
 
-            </CTableDataCell>
-        } else if (d == 'ban') {
-            const Color = (value) => {
-                if (value) {
-                    return 'danger'
-                } else {
-                    return 'info'
+            if (typeof (data[d]) == 'object') {
+
+                if (d == 'Category') {
+                    return <CTableDataCell onClick={(e) => {
+                        redirect(`${url.view}?id=${id}`)
+                    }}>
+                        {data[d].title}
+                    </CTableDataCell>
                 }
-            }
-            const Ban = async (id) => {
-                await put(`${path.ban}/${id}`)
-                setChange(change + 1)
-            }
-            return <CTableDataCell>
-                <CButton color={Color(data[d])}
-                    onClick={() => { Ban(id) }}
-                >{Caplitailts(d)}</CButton>
-            </CTableDataCell>
-        } else if (d == 'Utype') {
-            let l = ['ulanyjy', 'yazyjy', 'redaktor']
-            let list = [l[data[d]]]
-            for (let i in l) {
-                if (data[d] != i) {
-                    list.push(l[i])
+                if (d == 'User') {
+                    return <CTableDataCell><div onClick={(e) => {
+                        if (data[d].id != 1) {
+                            console.log(`${url.user}/?id=${data[d].id}`)
+                            redirect(`${url.user}/?id=${data[d].id}`)
+                        }
+                    }}
+                        style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "flex-start",
+                            alignItems: "center",
+                        }}
+                    >
+
+                        <CAvatar src={`${setting.IP}/${data[d].img}`} />
+                        <CCardText >
+                            {Caplitailts(data[d].nick)}
+                        </CCardText>
+
+                    </div>
+                    </CTableDataCell >
                 }
+
+            } else if (d == 'img') {
+                return <CTableDataCell onClick={(e) => {
+                    redirect(`${url.view}?id=${id}`)
+                }}>
+                    <CAvatar src={`${setting.IP}/${data[d]}`} />
+
+                </CTableDataCell>
+            } else if (d == 'ban') {
+                const Color = (value) => {
+                    if (value) {
+                        return 'danger'
+                    } else {
+                        return 'info'
+                    }
+                }
+                const Ban = async (id) => {
+                    await put(`${path.ban}/${id}`)
+                    setChange(change + 1)
+                }
+                return <CTableDataCell>
+                    <CButton color={Color(data[d])}
+                        onClick={() => { Ban(id) }}
+                    >{Caplitailts(d)}</CButton>
+                </CTableDataCell>
+            } else if (d == 'Utype') {
+                let l = ['ulanyjy', 'yazyjy', 'redaktor']
+                let list = [l[data[d]]]
+                for (let i in l) {
+                    if (data[d] != i) {
+                        list.push(l[i])
+                    }
+                }
+                const edit = async (value) => {
+                    const l = ['ulanyjy', 'yazyjy', 'redaktor']
+                    await put(`${path.type}/${id}`, { type: l.indexOf(value) })
+                    setChange(change + 1)
+                }
+                return <CTableDataCell>
+                    <Dropdown list={list} func={edit} />
+                </CTableDataCell>
+            } else {
+                return <CTableDataCell onClick={(e) => {
+                    redirect(`${url.view}?id=${id}`)
+                }}>
+                    {data[d]}
+                </CTableDataCell>
             }
-            const edit = async (value) => {
-                const l = ['ulanyjy', 'yazyjy', 'redaktor']
-                await put(`${path.type}/${id}`, { type: l.indexOf(value) })
-                setChange(change + 1)
-            }
-            return <CTableDataCell>
-                <Dropdown list={list} func={edit} />
-            </CTableDataCell>
-        } else {
-            return <CTableDataCell onClick={(e) => {
-                redirect(`${url.view}?id=${id}`)
-            }}>
-                {data[d]}
-            </CTableDataCell>
+            
+        } catch (error) {
+            console.error(error)
         }
-
     }
 
     const TableBody = (props) => {
@@ -196,28 +228,29 @@ const Table = (props) => {
         let change = props.change
 
 
-
-        return < CTableBody >
-            {datalist.map((data, index) => {
-                {
-                    if (data.Utype != 3) {
-                        return <CTableRow key={index} >
-                            {
-                                Object.keys(data).map((d, index2) => {
-                                    return <Content url={url} key={index2} data={data} d={d} id={data.id} path={path} change={change} setChange={setChange} />
-                                })
-                            }
-                            <Options edit={edit} del={del} data={data} index={index} setID={setID} setIndex={setIndex} setVisible={setVisible} />
-                        </CTableRow>
+        if (datalist.length == 0) {
+            return <div>
+                Empty
+            </div>
+        } else {
+            return < CTableBody >
+                {datalist.map((data, index) => {
+                    {
+                        if (data.Utype != 3) {
+                            return <CTableRow key={index} >
+                                {
+                                    Object.keys(data).map((d, index2) => {
+                                        return <Content url={url} key={index2} data={data} d={d} id={data.id} path={path} change={change} setChange={setChange} />
+                                    })
+                                }
+                                <Options edit={edit} del={del} data={data} index={index} setID={setID} setIndex={setIndex} setVisible={setVisible} />
+                            </CTableRow>
+                        }
                     }
-
-
-
                 }
-
-            }
-            )}
-        </CTableBody >
+                )}
+            </CTableBody >
+        }
     }
 
     return <CTable hover striped style={{ "textAlign": 'center' }}>

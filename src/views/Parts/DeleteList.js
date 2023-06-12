@@ -1,5 +1,5 @@
 import { CButton, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } from "@coreui/react";
-import { del } from "src/fetch";
+import { del } from "../../fetch";
 
 const Delete = (props) => {
     const visible = props.visible

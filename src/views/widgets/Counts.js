@@ -4,7 +4,7 @@ import CIcon from '@coreui/icons-react'
 import { cilImage, cilUser } from '@coreui/icons'
 import axios from 'axios'
 import setting from '../../setting.json'
-import { get } from 'src/fetch'
+import { get } from '../../fetch'
 import { useNavigate } from 'react-router-dom'
 
 

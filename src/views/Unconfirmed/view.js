@@ -19,7 +19,7 @@ import {
 
 } from '@coreui/react'
 import { useLocation, useNavigate } from 'react-router-dom';
-import { get, post } from 'src/fetch';
+import { get, post } from '../../fetch';
 import { Caplitailts, Time } from './util';
 import Delete from '../Parts/DeleteView';
 import sets from './sets.json'
@@ -105,12 +105,10 @@ const CategoryView = () => {
         }
 
         const Send = async () => {
-            console.log(choice, id)
             const res = await post('/admin/unconfirmed', {
                 choice: choice,
                 id: id
             })
-            console.log(res)
             redirect(sets.rout.list)
         }
 
@@ -138,6 +136,18 @@ const CategoryView = () => {
     const Content = (props) => {
         let content = props.content
         if (typeof (data[content]) == 'object') {
+            console.log(content, data[content])
+
+            if (data[content] == null) {
+                return <CTableRow color="light">
+                    <CTableDataCell>
+                        <CCardTitle>{Caplitailts(content)}</CCardTitle>
+                    </CTableDataCell>
+                    <CTableDataCell>
+
+                    </CTableDataCell>
+                </CTableRow>
+            }
             if (content == 'Category') {
                 return (<CTableRow color="light">
                     <CTableDataCell>

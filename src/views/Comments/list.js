@@ -7,7 +7,7 @@ import {
     CButton
 } from '@coreui/react'
 import { del, get } from '../../fetch'
-import { Caplitailts } from './util'
+import { Caplitailts } from '../Category/util'
 import Pagination from '../Parts/Pagination'
 import Table from '../Parts/Table'
 import Search from '../Parts/Search'
@@ -26,7 +26,7 @@ const CategoryList = () => {
     const [index, setIndex] = useState(0)
     const [change, setChange] = useState(1)
     const [search, setSearch] = useState('')
-    const [filter, Setfilter] = useState(['nick', 'name', 'surname', 'id'])
+    const [filter, Setfilter] = useState(['content', 'id'])
     const [sort, setSort] = useState(['id', 'ASC'])
     const [alert, setAlert] = useState('')
 
@@ -97,12 +97,7 @@ const CategoryList = () => {
                         "justifyContent": "space-between"
                     }}>
                         <strong>{Caplitailts(sets.title)} list</strong>
-                        {/* <CButton
-                            color={'primary'}
-                            onClick={(e) => { redirect(`${sets.rout.create}`) }}
-                        >
-                            Create
-                        </CButton> */}
+
                     </CCardHeader>
                     <CCard>
                         <Search
@@ -121,7 +116,6 @@ const CategoryList = () => {
                         />
                     </CCard>
                     <CCardBody>
-
                         <div className='table-container'>
                             <Table datalist={datalist}
                                 sort={sort} setSort={setSort}
@@ -132,7 +126,6 @@ const CategoryList = () => {
                                 setIndex={setIndex}
                                 setVisible={setVisible}
                                 url={sets.rout}
-                                path={sets.path}
                                 edit={sets.edit}
                                 del={sets.delete}
                             />

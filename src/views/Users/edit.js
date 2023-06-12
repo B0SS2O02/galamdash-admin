@@ -11,7 +11,7 @@ import {
 
 } from '@coreui/react'
 import { useNavigate, useLocation } from 'react-router-dom';
-import { get, put } from 'src/fetch';
+import { get, put } from '../../fetch';
 import { Caplitailts, Time } from './util';
 import sets from './sets.json'
 

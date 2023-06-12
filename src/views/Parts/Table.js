@@ -4,8 +4,9 @@ import { Caplitailts } from "./Util"
 import { cilChevronCircleDownAlt, cilChevronCircleUpAlt } from "@coreui/icons";
 import { useNavigate } from "react-router-dom";
 import setting from '../../setting.json'
-import { put } from "src/fetch";
+import { put } from "../../fetch";
 import Dropdown from "./Dropdown";
+import { Time } from "../Users/util";
 
 const Table = (props) => {
     let datalist = props.datalist
@@ -125,7 +126,6 @@ const Table = (props) => {
 
     const Content = (props) => {
         try {
-
             const data = props.data
             const d = props.d
             const id = props.id
@@ -135,7 +135,13 @@ const Table = (props) => {
             let change = props.change
 
             if (typeof (data[d]) == 'object') {
+                if (data[d] == null) {
+                    return <CTableDataCell onClick={(e) => {
+                        redirect(`${url.view}?id=${id}`)
+                    }}>
 
+                    </CTableDataCell>
+                }
                 if (d == 'Category') {
                     return <CTableDataCell onClick={(e) => {
                         redirect(`${url.view}?id=${id}`)
@@ -143,10 +149,29 @@ const Table = (props) => {
                         {data[d].title}
                     </CTableDataCell>
                 }
+                if (d == 'Post') {
+                    return <CTableDataCell><div onClick={(e) => {
+                        if (data[d].id != 1) {
+                            redirect(`${url.user}/?id=${data[d].id}`)
+                        }
+                    }}
+                        style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "flex-start",
+                            alignItems: "center",
+                        }}
+                    >
+                        <CCardText >
+                            {Caplitailts(data[d].title)}
+                        </CCardText>
+
+                    </div>
+                    </CTableDataCell >
+                }
                 if (d == 'User') {
                     return <CTableDataCell><div onClick={(e) => {
                         if (data[d].id != 1) {
-                            console.log(`${url.user}/?id=${data[d].id}`)
                             redirect(`${url.user}/?id=${data[d].id}`)
                         }
                     }}
@@ -207,14 +232,20 @@ const Table = (props) => {
                 return <CTableDataCell>
                     <Dropdown list={list} func={edit} />
                 </CTableDataCell>
+            } else if (d == 'time') {
+                return <CTableDataCell onClick={(e) => {
+                    redirect(`${url.view}?id=${id}`)
+                }} >
+                    {Time(data[d])}
+                </CTableDataCell>
             } else {
                 return <CTableDataCell onClick={(e) => {
                     redirect(`${url.view}?id=${id}`)
-                }}>
-                    {data[d]}
+                }} dangerouslySetInnerHTML={{ __html: data[d] }}>
+
                 </CTableDataCell>
             }
-            
+
         } catch (error) {
             console.error(error)
         }

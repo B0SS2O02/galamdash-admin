@@ -6,7 +6,7 @@ import {
     CCol,
     CButton
 } from '@coreui/react'
-import { del, get } from 'src/fetch'
+import { del, get } from '../../fetch'
 import { Caplitailts } from './util'
 import Pagination from '../Parts/Pagination'
 import Table from '../Parts/Table'
@@ -96,12 +96,12 @@ const CategoryList = () => {
                         "justifyContent": "space-between"
                     }}>
                         <strong>{Caplitailts(sets.title)} list</strong>
-                        {/* <CButton
+                        <CButton
                             color={'primary'}
                             onClick={(e) => { redirect(`${sets.rout.create}`) }}
                         >
                             Create
-                        </CButton> */}
+                        </CButton>
                     </CCardHeader>
                     <CCard>
                         <Search

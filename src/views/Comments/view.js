@@ -14,12 +14,11 @@ import {
 
 } from '@coreui/react'
 import { useLocation, useNavigate } from 'react-router-dom';
-import { get, put } from '../../fetch';
+import { get } from '../../fetch';
 import { Caplitailts, Time } from './util';
 import Delete from '../Parts/DeleteView';
 import sets from './sets.json'
 import setting from '../../setting.json'
-import Dropdown from '../Parts/Dropdown';
 
 const CategoryView = () => {
     const [data, setData] = useState({})
@@ -28,11 +27,10 @@ const CategoryView = () => {
     const query = new URLSearchParams(search);
     const id = query.get('id');
     const redirect = useNavigate()
-    const [change, setChange] = useState(0)
 
     useEffect(() => {
         fetch()
-    }, [change])
+    }, [])
 
     const edit = sets.edit
     const del = sets.delete
@@ -40,6 +38,7 @@ const CategoryView = () => {
     const fetch = async () => {
         let res = await get(`${sets.path.view}${id}`)
         setData(res.data)
+        console.log(res.data)
     }
 
 
@@ -83,9 +82,7 @@ const CategoryView = () => {
     }
 
     const Content = (props) => {
-        let content = props.content
-        let path = props.path
-        let id = props.id
+        let { content } = props
         if (content == 'img') {
             return (<CTableRow color="light">
                 <CTableDataCell>
@@ -114,38 +111,26 @@ const CategoryView = () => {
                 }
                 return <CButton color={Color(ban)}
                     onClick={() => { Ban(id) }}
-                >Ban</CButton>
+                >{Caplitailts('ban')}</CButton>
 
             }
+
             return (<CTableRow color="light">
                 <CTableDataCell>
                     <CCardTitle>Ban</CCardTitle>
                 </CTableDataCell>
                 <CTableDataCell>
-                    <Ban ban={data[content]} path={sets.path} id={data.id} />
+                    <Ban ban={data[content]} id={data.id} />
                 </CTableDataCell>
             </CTableRow>
             )
-        } else if (content == 'Utype') {
-            let l = ['ulanyjy', 'yazyjy', 'redaktor']
-            let list = [l[data[content]]]
-            for (let i in l) {
-                if (data[content] != i) {
-                    list.push(l[i])
-                }
-            }
-
-            const edit = async (value) => {
-                const l = ['ulanyjy', 'yazyjy', 'redaktor']
-                await put(`${path.type}/${id}`, { type: l.indexOf(value) })
-                setChange(change + 1)
-            }
+        } else if (content == 'type') {
             return (<CTableRow color="light">
                 <CTableDataCell>
                     <CCardTitle>Type</CCardTitle>
                 </CTableDataCell>
                 <CTableDataCell>
-                    <Dropdown list={list} func={edit} />
+                    <Type type={data[content]} id={data.id} />
                 </CTableDataCell>
             </CTableRow>
             )
@@ -156,6 +141,36 @@ const CategoryView = () => {
                 </CTableDataCell>
                 <CTableDataCell>
                     <Time time={data[content]} />
+                </CTableDataCell>
+            </CTableRow>
+            )
+        } else if (content == 'User') {
+            return (<CTableRow color="light">
+                <CTableDataCell>
+                    <CCardTitle>{content[0].toUpperCase() + content.substring(1)}</CCardTitle>
+                </CTableDataCell>
+                <CTableDataCell>
+
+                    <CCardText>
+                        <CAvatar src={`${setting.IP}/${data[content].img}`} />
+                        {data[content].nick}
+                    </CCardText>
+
+                </CTableDataCell>
+            </CTableRow>
+            )
+        } else if (content == 'Post') {
+            return (<CTableRow color="light">
+                <CTableDataCell>
+                    <CCardTitle>{content[0].toUpperCase() + content.substring(1)}</CCardTitle>
+                </CTableDataCell>
+                <CTableDataCell>
+
+                    <CCardText>
+                        <CAvatar src={`${setting.IP}/${data[content].img}`} />
+                        {data[content].title}
+                    </CCardText>
+
                 </CTableDataCell>
             </CTableRow>
             )
@@ -193,7 +208,7 @@ const CategoryView = () => {
                         <CTableBody>
                             {
                                 Object.keys(data).map((d, index) =>
-                                    <Content key={index} content={d} id={data.id} path={sets.path} />
+                                    <Content key={index} content={d} />
                                 )
                             }
                         </CTableBody>

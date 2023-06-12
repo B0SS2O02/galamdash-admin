@@ -1,6 +1,6 @@
 import { CButton, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } from "@coreui/react";
 import { useNavigate } from "react-router-dom";
-import { del } from "src/fetch";
+import { del } from "../../fetch";
 
 const Delete = (props) => {
     const visible = props.visible

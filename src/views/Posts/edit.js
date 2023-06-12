@@ -13,13 +13,14 @@ import {
 
 } from '@coreui/react'
 import { useNavigate, useLocation } from 'react-router-dom';
-import { get, put } from 'src/fetch';
+import { get, post, put } from '../../fetch';
 import { Caplitailts, Time } from './util';
 import sets from './sets.json'
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import setting from '../../setting.json'
 import Dropdown from '../Parts/Dropdown';
+import Form from 'react-bootstrap/Form';
 
 
 const Edit = () => {
@@ -96,8 +97,7 @@ const Edit = () => {
                 toolbar: [
                     [{ 'header': [1, 2, false] }],
                     ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-                    [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
-                    ['link', 'image'],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }], 
                     ['clean']
                 ],
             }
@@ -121,53 +121,122 @@ const Edit = () => {
 
         } else if (typeof (data[d]) == 'object') {
             if (d == 'Category') {
-                const [id, setId] = useState(data[d].id)
-                const [list, setList] = useState([])
-                const [list2, setList2] = useState([])
-                useEffect(() => {
-                    Fetch()
-                }, [])
-                const Fetch = async () => {
-                    await get(`/admin/${d.toLowerCase()}`).then((res) => {
-                        const data = res.data.data
-                        let l = [0]
-                        setList2(data)
-                        for (const key in data) {
-                            if (data[key].id == id) {
-                                l[0] = data[key].title
-                            } else {
-                                l.push(data[key].title)
-                            }
-
-                        }
-                        setList(l)
-                    })
-                }
-                if (list.length > 0) {
-                    return <div>
-                        <CCardTitle>{d[0].toUpperCase() + d.substring(1)}</CCardTitle>
-                        <Dropdown list={list} func={(id) => {
-                            let ID = 0
-                            for (const key in list2) {
-                                if (list2[key].title == id) {
-                                    setId(list2[key].id)
-                                    ID = list2[key].id
-                                }
-                            }
+                if (data[d] !== null) {
+                    const [id, setId] = useState(data[d].id)
+                    const [list, setList] = useState([])
+                    const [list2, setList2] = useState([])
+                    useEffect(() => {
+                        Fetch()
+                    }, [])
+                    const Fetch = async () => {
+                        await get(`/admin/${d.toLowerCase()}`).then((res) => {
+                            const data = res.data.data
                             let l = [0]
-                            for (const key in list2) {
-                                if (list2[key].id == ID) {
-                                    l[0] = list2[key].title
+                            setList2(data)
+                            for (const key in data) {
+                                if (data[key].id == id) {
+                                    l[0] = data[key].title
                                 } else {
-                                    l.push(list2[key].title)
+                                    l.push(data[key].title)
                                 }
-
+                                setList(l)
                             }
-                            setList(l)
-                        }} />
-                        <CFormInput hidden name={d.toLowerCase() + 'Id'} value={id} />
-                    </div>
+                        })
+                    }
+
+                    if (list.length > 0) {
+                        return <div>
+                            <CCardTitle>{d[0].toUpperCase() + d.substring(1)}</CCardTitle>
+                            <Dropdown list={list} func={(id) => {
+                                let ID = 0
+                                for (const key in list2) {
+                                    if (list2[key].title == id) {
+                                        setId(list2[key].id)
+                                        ID = list2[key].id
+                                    }
+                                }
+                                let l = [0]
+                                for (const key in list2) {
+                                    if (list2[key].id == ID) {
+                                        l[0] = list2[key].title
+                                    } else {
+                                        l.push(list2[key].title)
+                                    }
+
+                                }
+                                setList(l)
+                            }} />
+                            <CFormInput hidden name={d.toLowerCase() + 'Id'} value={id} />
+                        </div>
+                    }
+                } else {
+                    const [id, setId] = useState(null)
+                    const [list, setList] = useState([])
+                    const [list2, setList2] = useState([])
+                    useEffect(() => {
+                        Fetch()
+                    }, [])
+                    const Fetch = async () => {
+                        await get(`/admin/${d.toLowerCase()}`).then((res) => {
+                            const Data = res.data.data
+                            console.log(Data)
+                            let l = [0]
+                            setList2(Data)
+                            if (id == null) {
+                                for (const key in Data) {
+
+                                    l[key] = (Data[key].title)
+
+                                    setList(l)
+                                }
+                                setList(l)
+                                setId(Data[0].id)
+                            } else {
+                                for (const key in Data) {
+                                    if (Data[key].id == id) {
+                                        l[0] = Data[key].title
+                                    } else {
+                                        l.push(Data[key].title)
+                                    }
+                                    setList(l)
+                                }
+                            }
+
+                        })
+                    }
+                    if (list.length > 0) {
+                        console.log(list)
+                        return <div>
+                            <CCardTitle>{d[0].toUpperCase() + d.substring(1)}</CCardTitle>
+                            <Dropdown list={list} func={(id) => {
+                                let ID = 0
+                                for (const key in list2) {
+                                    if (list2[key].title == id) {
+                                        setId(list2[key].id)
+                                        ID = list2[key].id
+                                    }
+                                }
+                                let l = [0]
+                                for (const key in list2) {
+                                    if (list2[key].id == ID) {
+                                        l[0] = list2[key].title
+                                    } else {
+                                        l.push(list2[key].title)
+                                    }
+
+                                }
+                                setList(l)
+                            }} />
+                            <CFormInput hidden name={d.toLowerCase() + 'Id'} value={id} />
+                        </div>
+                    } else {
+                        return <div>
+                            <CCardTitle>{d[0].toUpperCase() + d.substring(1)}</CCardTitle>
+
+                        </div>
+                    }
                 }
+
             } else if (d == 'User') {
                 return <div onClick={(e) => {
                     if (data[d].id != 1) {
@@ -190,6 +259,65 @@ const Edit = () => {
                     </div>
 
                 </div>
+            } else if (d == "Tags") {
+                const [Tags, setTags] = useState([])
+                const [ch, setCh] = useState(0)
+
+                useEffect(() => {
+                    taglist()
+                }, [ch])
+                const taglist = async () => {
+                    const result = await get('/api/tag?all=true')
+                    let Data = result.data
+
+
+                    for (let i = 0; i < data[d].length; i++) {
+                        for (let j = 0; j < Data.length; j++) {
+                            if (data[d][i].TagList.id == Data[j].id) {
+                                Data[j]['selected'] = true
+                            }
+
+                        }
+                    }
+                    setTags(Data)
+
+                }
+
+                const SelectCheck = (value) => {
+                    if (!!value) {
+                        return true
+                    }
+                }
+
+                return <div>
+                    <CCardTitle>{d[0].toUpperCase() + d.substring(1)}</CCardTitle>
+                    <Form.Select aria-label="Default select example" multiple name='tag' >
+                        {
+                            Tags.map((e, index) => {
+                                return <option key={index} selected={SelectCheck(e.selected)} value={e.id}>{e.title}</option>
+                            })
+                        }
+                    </Form.Select>
+                    <div style={{
+                        display: 'flex',
+                        alignItems: "center",
+                        alignContent: "center",
+                        justifyContent: "center",
+                        flexWrap: "nowrap"
+                    }}>
+                        <CFormInput name='newtag' id='newtag'></CFormInput>
+                        <CButton onClick={async () => {
+                            await post('/admin/tag', {
+                                tag: document.getElementById("newtag").value
+                            })
+                            setCh(ch + 1)
+                        }}>Add</CButton>
+                    </div>
+                </div >
+
+
+
+
             }
 
 
@@ -207,20 +335,28 @@ const Edit = () => {
 
     const parse = (form) => {
         let elements = form.getElementsByTagName('input')
+        let select = document.getElementsByName('tag')[0]
         let body = {}
         for (let i = 0; i < elements.length; i++) {
             if (elements[i].name == 'img') {
                 if (!!elements[i].files[0]) {
                     body[elements[i].name] = elements[i].files[0]
                 }
-
             } else {
                 if (!!elements[i].value) {
                     body[elements[i].name] = elements[i].value
                 }
-
             }
-
+        }
+        if (select.length > 0) {
+            const options = select.getElementsByTagName('option');
+            body["Tags"] = []
+            for (let i in options) {
+                if (!!options[i].selected) {
+                    console.log(options[i].value)
+                    body["Tags"].push(options[i].value)
+                }
+            }
         }
         return body
     }
@@ -230,26 +366,31 @@ const Edit = () => {
     const update = async (e) => {
         e.preventDefault()
         const body = parse(e.target)
+        console.log(body)
         let formData = new FormData()
         for (let i in body) {
-            console.log(i, body[i])
             formData.append(i, body[i])
         }
-        console.log(formData)
         let res = await put(`${sets.path.edit}${id}`, formData, {
             header: {
-                'Content-Type':'multipart/form-data'
+                'Content-Type': 'multipart/form-data'
             }
         })
         redirect(sets.rout.list)
-
     }
 
     return (
         <CCard className="mb-4" >
             <CCardHeader component="h5">{Caplitailts(sets.title)} edit</CCardHeader>
             <CCardBody>
-                <CForm onSubmit={(e) => update(e)}>
+                <CForm
+                    style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "baseline",
+                        justifyContent: "flex-start"
+                    }}
+                    onSubmit={(e) => update(e)}>
                     {
                         Object.keys(data).map((d, index) =>
                             <div key={index}>

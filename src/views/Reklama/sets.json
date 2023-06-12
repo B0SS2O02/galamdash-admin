@@ -1,0 +1,41 @@
+{
+    "rout": {
+        "list": "/reklama",
+        "view": "/reklama/view",
+        "create": "/reklama/create",
+        "edit": "/reklama/edit"
+    },
+    "path": {
+        "view": "/admin/reklama/",
+        "edit": "/admin/reklama/",
+        "create": "/admin/reklama/",
+        "list": "/admin/reklama",
+        "search": "/admin/reklama/",
+        "delete": "/admin/reklama/"
+    },
+    "title": "Reklama",
+    "edit": true,
+    "delete": true,
+    "createForm": [
+        {
+            "type": "input",
+            "title": "Sayt link",
+            "name": "link"
+        },
+        {
+            "type": "number",
+            "title": "Durmaly yeri",
+            "name": "position"
+        },
+        {
+            "type": "input",
+            "title": "Title",
+            "name": "title"
+        },
+        {
+            "type": "file",
+            "title": "Surat",
+            "name": "img"
+        }
+    ]
+}

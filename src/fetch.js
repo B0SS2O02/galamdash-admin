@@ -1,15 +1,17 @@
 import axios from "axios"
 import setting from './setting.json'
-let token = localStorage.token
+import Cookie from 'universal-cookie'
+const cookie = new Cookie()
+let token = cookie.get('token')
 
 const get = async (url, config = {}) => {
     if (!config.headers) {
         config['headers'] = {}
     }
     config['headers']['Authorization'] = token
+
     return await axios.get(setting.IP + url, config)
         .catch(err => {
-            console.log(err)
             if (!!err.response.status) {
                 if (err.response.status == 503 || err.response.status == 403) {
                     localStorage.clear()
@@ -44,7 +46,11 @@ const post = async (url, body = {}, config = {}) => {
         config['headers'] = {}
     }
     config['headers']['Authorization'] = token
-    return await axios.post(setting.IP + url, body, config)
+    let result
+    await axios.post(setting.IP + url, body, config)
+        .then((response) => { result = response })
+        .catch((err) => { result = err.response })
+    return result
 }
 
 export {

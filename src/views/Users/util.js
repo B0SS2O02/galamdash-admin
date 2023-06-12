@@ -11,6 +11,7 @@ const FormCreate = (props) => {
         return <div className="mb-3" key={index}>
             <CFormLabel htmlFor={`id${index}`}>{data.title || ''}</CFormLabel>
             <CFormInput
+                required
                 type={data.type}
                 id={data.id || `id${index}`}
                 name={data.name}
@@ -22,6 +23,7 @@ const FormCreate = (props) => {
         return <div className="mb-3" key={index}>
             <CFormLabel htmlFor={`id${index}`}>{data.title}</CFormLabel>
             <CFormTextarea name={data.name}
+                required
                 id={data.id || `id${index}`}
                 rows={data.rows || 3}
                 placeholder={data.placeholder}
@@ -47,16 +49,7 @@ const Caplitailts = (word) => {
 }
 
 const Time = (props) => {
-    
-    let t = new Date(props.time)
-    const zero = (number) => {
-        if (number.toString().length < 2) {
-            return '0' + number.toString()
-        } else {
-            return number.toString()
-        }
-    }
-    return (`${zero(t.getHours())}:${zero(t.getMinutes())}:${zero(t.getSeconds())} ${zero(t.getDay())}.${zero(t.getMonth())}.${t.getFullYear()}`)
+    return (new Date(props).toLocaleString())
 }
 export {
     FormCreate,

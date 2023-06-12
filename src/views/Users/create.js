@@ -8,7 +8,7 @@ import {
 
 } from '@coreui/react'
 import { Caplitailts, FormCreate } from './util';
-import { post } from 'src/fetch';
+import { post } from '../../fetch';
 import sets from './sets.json'
 import { useNavigate } from 'react-router-dom';
 

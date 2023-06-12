@@ -2,7 +2,7 @@ import { cilX } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import { CButton, CCardBody, CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle, CForm, CFormInput } from "@coreui/react";
 import { Caplitailts } from "./Util";
-import { get } from "src/fetch";
+import { get } from "../../fetch";
 
 
 const Search = (props) => {

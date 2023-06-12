@@ -47,12 +47,14 @@ const Edit = () => {
                     <Time time={data[d]} />
                 </CCardText>
             </div>)
+        } else if (d == 'User' || d == 'Post') {
+
         } else {
             return (<div>
                 <CCardTitle>{d[0].toUpperCase() + d.substring(1)}</CCardTitle>
                 <CFormInput
                     type="text"
-                    name='title'
+                    name={d}
                     defaultValue={data[d]}
                 />
             </div>)

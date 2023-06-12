@@ -1,0 +1,26 @@
+{
+    "rout": {
+        "list": "/comments",
+        "view": "/comments/view",
+        "create": "/comments/create",
+        "edit": "/comments/edit"
+    },
+    "path": {
+        "view": "/admin/comments/view/",
+        "edit": "/admin/comments/",
+        "create": "/admin/comments/",
+        "list": "/admin/comments",
+        "search": "/admin/comments/search",
+        "delete": "/admin/comments/"
+    },
+    "title": "Categories",
+    "edit": true,
+    "delete": true,
+    "createForm": [
+        {
+            "type": "input",
+            "title": "Category name",
+            "name": "title"
+        }
+    ]
+}

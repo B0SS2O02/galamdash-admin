@@ -21,8 +21,29 @@
     "createForm": [
         {
             "type": "input",
-            "title": "Category name",
+            "title": "Post title",
             "name": "title"
+        },
+        {
+            "type": "textarea",
+            "title": "Post info",
+            "name": "info"
+        },
+        {
+            "type": "textarea",
+            "title": "Post content",
+            "name": "content"
+        },
+        {
+            "type": "file",
+            "title": "Post image",
+            "name": "img"
+        },
+        {
+            "type": "select",
+            "title": "Post category",
+            "name": "category",
+            "get":"/api/category"
         }
     ]
 }

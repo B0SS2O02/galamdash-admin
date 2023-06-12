@@ -4,6 +4,9 @@ import './scss/style.scss'
 import axios from 'axios'
 import setting from './setting.json'
 
+import Cookie from 'universal-cookie'
+const cookie=new Cookie()
+
 const loading = (
   <div className="pt-3 text-center">
     <div className="sk-spinner sk-spinner-pulse"></div>
@@ -50,16 +53,16 @@ const NoAuth = () => {
 
 class App extends Component {
   render() {
-    if (!localStorage.token && !localStorage.type) {
+    if (!cookie.get('token') && !cookie.get('type')) {
       return NoAuth()
     } else {
 
-      if (parseInt(localStorage.type) > 2) {
+      if (parseInt(cookie.get('type')) > 2) {
 
         return Auth()
       } else {
 
-        localStorage.clear()
+        cookie.clear()
         return NoAuth()
       }
 

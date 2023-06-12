@@ -30,12 +30,30 @@ const _nav = [
     to: '/post',
     icon: <CIcon icon={cilImage} customClassName="nav-icon" />,
   },
+  // {
+  //   component: CNavItem,
+  //   name: 'Unconfirmed',
+  //   to: '/unconfirmed',
+  //   icon: <CIcon icon={cilImage} customClassName="nav-icon" />,
+  // },
   {
     component: CNavItem,
-    name: 'Unconfirmed',
-    to: '/unconfirmed',
+    name: 'Reklama',
+    to: '/reklama',
     icon: <CIcon icon={cilImage} customClassName="nav-icon" />,
   },
+  {
+    component: CNavItem,
+    name: 'Payhasly sozler',
+    to: '/greatwords',
+    icon: <CIcon icon={cilImage} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Comments',
+    to: '/comments',
+    icon: <CIcon icon={cilImage} customClassName="nav-icon" />,
+  }
 ]
 
 export default _nav

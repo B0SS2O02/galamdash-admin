@@ -22,32 +22,56 @@ const Craete = () => {
             inputs.push(form.getElementsByTagName(forms_types[type]))
         }
         let elements = []
+        let fd = false
         for (let i in inputs) {
             for (let j in inputs[i]) {
                 if (Number.isInteger(parseInt(j))) {
                     elements.push(inputs[i][j])
+                    if (inputs[i][j].type === 'file') {
+                        fd = true
+                        if (inputs[i][j].files.length == 0) {
+                            return {
+                                error: `${inputs[i][j].name} is empty`
+                            }
+                        }
+                    } else {
+                        if (!inputs[i][j].value) {
+                            return {
+                                error: `${inputs[i][j].name} is empty`
+                            }
+                        }
+                    }
                 }
             }
         }
-        let body = {}
-        for (let i = 0; i < elements.length; i++) {
-            body[elements[i].name] = elements[i].value
+        if (fd) {
+            let formData = new FormData()
+            for (let i = 0; i < elements.length; i++) {
+                if (elements[i].type === "file") {
+                    formData.append(elements[i].name, elements[i].files[0])
+                } else {
+                    formData.append(elements[i].name, elements[i].value)
+                }
+            }
+            return formData
+        } else {
+            let body = {}
+            for (let i = 0; i < elements.length; i++) {
+                body[elements[i].name] = elements[i].value
+            }
+            return body
         }
-        return body
+
     }
     const send = async (e) => {
         e.preventDefault()
-        // const body = parse(e.target)
-
-        const result = await post(sets.path.create, new FormData(e.target))
-
-        console.log('result', result)
-        if (result.status == 200) {
+        const body = parse(e.target)
+        if (!!body.error) {
+            console.log(body.error)
+        } else {
+            await post(sets.path.create, body)
             redirect(sets.rout.list)
         }
-        // if (!!result) {
-        //     
-        // }
 
     }
     return (

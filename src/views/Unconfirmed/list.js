@@ -6,7 +6,7 @@ import {
     CCol,
     CButton
 } from '@coreui/react'
-import { del, get } from 'src/fetch'
+import { del, get } from '../../fetch'
 import { Caplitailts } from './util'
 import Pagination from '../Parts/Pagination'
 import Table from '../Parts/Table'

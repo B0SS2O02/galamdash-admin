@@ -14,7 +14,7 @@ import {
 
 } from '@coreui/react'
 import { useLocation, useNavigate } from 'react-router-dom';
-import { get } from 'src/fetch';
+import { get } from '../../fetch';
 import { Caplitailts, Time } from './util';
 import Delete from '../Parts/DeleteView';
 import sets from './sets.json'
@@ -83,6 +83,18 @@ const CategoryView = () => {
     const Content = (props) => {
         let { content } = props
         if (typeof (data[content]) == 'object') {
+            if (data[content] == null) {
+                return <CTableRow color="light">
+                    <CTableDataCell>
+                        <CCardTitle>{content[0].toUpperCase() + content.substring(1)}</CCardTitle>
+                    </CTableDataCell>
+                    <CTableDataCell>
+                        <CCardText>
+
+                        </CCardText>
+                    </CTableDataCell>
+                </CTableRow>
+            }
             if (content == 'Category') {
                 return (<CTableRow color="light">
                     <CTableDataCell>
@@ -123,27 +135,23 @@ const CategoryView = () => {
 
                     </CTableDataCell>
                 </CTableRow >
-                // <div onClick={(e) => {
-                //     if (data[content].id != 1) {
-                //         redirect(`${sets.rout.user}/?id=${data[content].id}`)
-                //     }
-                // }}>
-                //     <CCardTitle >Post creator</CCardTitle>
-                //     <div
-                //         style={{
-                //             display: "flex",
-                //             flexDirection: "row",
-                //             justifyContent: "flex-start",
-                //             alignItems: "flex-start"
-                //         }}>
-                //         <CAvatar src={`${setting.IP}/${data[content].img}`} />
-                //         <CCardText >
-                //             {Caplitailts(data[content].nick)}
-                //         </CCardText>
+            } else if (content == 'Tags') {
+                return <CTableRow color="light">
+                    <CTableDataCell>
+                        <CCardTitle>Tags</CCardTitle>
+                    </CTableDataCell>
+                    <CTableDataCell>
+                        {
+                            data[content].map((tag, index) => {
+                                return <div key={index}>{tag.TagList.title}</div>
+                            })
+                        }
+                    </CTableDataCell>
+                </CTableRow>
+            } else {
+                return <CTableRow color="light">
 
-                //     </div>
-
-                // </div>
+                </CTableRow>
             }
 
         } else if (content == 'img') {

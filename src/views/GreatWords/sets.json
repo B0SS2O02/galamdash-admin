@@ -1,0 +1,31 @@
+{
+    "rout": {
+        "list": "/greatwords",
+        "view": "/greatwords/view",
+        "create": "/greatwords/create",
+        "edit": "/greatwords/edit"
+    },
+    "path": {
+        "view": "/admin/greatwords/",
+        "edit": "/admin/greatwords/",
+        "create": "/admin/greatwords/",
+        "list": "/admin/greatwords",
+        "search": "/admin/greatwords/",
+        "delete": "/admin/greatwords/"
+    },
+    "title": "Great words",
+    "edit": true,
+    "delete": true,
+    "createForm": [
+        {
+            "type": "input",
+            "title": "Awtoryn ady",
+            "name": "avtor"
+        },
+        {
+            "type": "input",
+            "title": "Sozler",
+            "name": "content"
+        }
+    ]
+}

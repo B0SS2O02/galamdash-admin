@@ -18,7 +18,7 @@ import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 import axios from 'axios'
 import setting from '../../../setting.json'
-import Fetch from '../../fetch'
+import Fetch from '../../../fetch'
 
 
 const Login = () => {

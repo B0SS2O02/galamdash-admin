@@ -20,7 +20,7 @@ import { AppHeaderDropdown } from './header/index'
 
 
 import logo2 from '../assets/images/galamdash.jpg'
-import logo from 'src/assets/images/icon.jpg'
+import logo from '../assets/images/icon.jpg'
 
 const AppHeader = () => {
   const dispatch = useDispatch()

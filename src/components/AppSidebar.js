@@ -7,7 +7,7 @@ import CIcon from '@coreui/icons-react'
 import { AppSidebarNav } from './AppSidebarNav'
 
 import logo2 from '../assets/images/galamdash.jpg'
-import logo from 'src/assets/images/icon.jpg'
+import logo from '../assets/images/icon.jpg'
 
 import SimpleBar from 'simplebar-react'
 import 'simplebar/dist/simplebar.min.css'
